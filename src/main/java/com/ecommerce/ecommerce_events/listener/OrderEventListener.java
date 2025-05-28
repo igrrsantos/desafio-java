@@ -1,6 +1,6 @@
 package com.ecommerce.ecommerce_events.listener;
-
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
+import com.ecommerce.ecommerce_events.factory.OrderFactory;
 import com.ecommerce.ecommerce_events.repository.OrderRepository;
 import com.ecommerce.ecommerce_events.strategy.ExpressOrderProcessingStrategy;
 import com.ecommerce.ecommerce_events.strategy.OrderProcessingStrategy;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
 import java.util.concurrent.ExecutorService;
 
 @Component
@@ -27,11 +26,9 @@ public class OrderEventListener {
 
     @RabbitListener(queues = "ecommerce.orders")
     public void handleOrderEvent(String orderDescription) {
-        // Criar o objeto CustomerOrder com base na descrição
-        CustomerOrder order = new CustomerOrder();
+        CustomerOrder order = OrderFactory.createOrder("express", "Pedido #5678");
         order.setDescription(orderDescription);
 
-        // Determinar a estratégia com base na descrição
         OrderProcessingStrategy strategy;
         if (orderDescription.contains("Express")) {
             strategy = new ExpressOrderProcessingStrategy(orderRepository);
@@ -39,7 +36,6 @@ public class OrderEventListener {
             strategy = new StandardOrderProcessingStrategy(orderRepository);
         }
 
-        // Processar o pedido usando a estratégia apropriada
         OrderProcessor processor = new OrderProcessor(strategy);
         processor.process(order);
     }
