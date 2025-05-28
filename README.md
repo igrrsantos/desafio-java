@@ -58,6 +58,7 @@ H2 Console → http://localhost:8080/h2-console (JDBC: jdbc:h2:mem:testdb, usuá
   - Envie mensagem contendo FAIL → deve falhar e ir para a fila ecommerce.orders.dlq.
 
 ## Estrutura do Projeto
+```
 src/main/java/com/ecommerce/ecommerce_events
 ├── config
 │   └── RabbitMQConfig.java
@@ -87,7 +88,7 @@ src/main/java/com/ecommerce/ecommerce_events
 ├── listener
 │   └── OrderEventListener.java
 └── EcommerceEventsApplication.java
-
+```
 
 ## Autor
 Igor Santos
