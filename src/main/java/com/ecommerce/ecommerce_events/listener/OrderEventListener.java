@@ -2,6 +2,10 @@ package com.ecommerce.ecommerce_events.listener;
 
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import com.ecommerce.ecommerce_events.repository.OrderRepository;
+import com.ecommerce.ecommerce_events.strategy.ExpressOrderProcessingStrategy;
+import com.ecommerce.ecommerce_events.strategy.OrderProcessingStrategy;
+import com.ecommerce.ecommerce_events.strategy.OrderProcessor;
+import com.ecommerce.ecommerce_events.strategy.StandardOrderProcessingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -21,17 +25,23 @@ public class OrderEventListener {
         this.orderRepository = orderRepository;
     }
 
-    @RabbitListener(queues = "${app.rabbitmq.queue}")
-    public void handleOrderEvent(String message) {
-        if (message.contains("FAIL")) {
-            throw new RuntimeException("Simulated processing failure");
+    @RabbitListener(queues = "ecommerce.orders")
+    public void handleOrderEvent(String orderDescription) {
+        // Criar o objeto CustomerOrder com base na descrição
+        CustomerOrder order = new CustomerOrder();
+        order.setDescription(orderDescription);
+
+        // Determinar a estratégia com base na descrição
+        OrderProcessingStrategy strategy;
+        if (orderDescription.contains("Express")) {
+            strategy = new ExpressOrderProcessingStrategy(orderRepository);
+        } else {
+            strategy = new StandardOrderProcessingStrategy(orderRepository);
         }
 
-        logger.info("Received order event, submitting to executor: {}", message);
-
-        taskExecutor.submit(() -> {
-            processOrder(message);
-        });
+        // Processar o pedido usando a estratégia apropriada
+        OrderProcessor processor = new OrderProcessor(strategy);
+        processor.process(order);
     }
 
     private void processOrder(String message) {

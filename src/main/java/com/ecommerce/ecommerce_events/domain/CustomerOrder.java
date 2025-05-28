@@ -9,6 +9,15 @@ public class CustomerOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Boolean priority;
+
+    public Boolean getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Boolean priority) {
+        this.priority = priority;
+    }
 
     private String description;
 
