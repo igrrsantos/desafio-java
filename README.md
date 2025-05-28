@@ -1,4 +1,4 @@
-# 📦 Ecommerce Events Project
+# Ecommerce Events Project
 
 Este projeto é um desafio técnico em Java para processar eventos de pedidos (orders) usando:
 - Spring Boot  
