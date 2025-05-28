@@ -40,3 +40,56 @@ Este projeto é um desafio técnico em Java para processar eventos de pedidos (o
 ```bash
 ./mvnw clean install
 ./mvnw spring-boot:run
+```
+
+3. Acesse:
+RabbitMQ Management → http://localhost:15672 (login: guest / guest)
+H2 Console → http://localhost:8080/h2-console (JDBC: jdbc:h2:mem:testdb, usuário: sa, senha: vazio)
+
+## Como Testar
+- Publique uma mensagem simples no RabbitMQ, fila ecommerce.orders.
+
+- Veja nos logs:
+  - Pedido processado como padrão ou expresso.
+  - Observadores chamados (notificação, faturamento, envio).
+  - Pedido persistido no banco.
+
+- Para testar DLQ:
+  - Envie mensagem contendo FAIL → deve falhar e ir para a fila ecommerce.orders.dlq.
+
+## Estrutura do Projeto
+src/main/java/com/ecommerce/ecommerce_events
+├── config
+│   └── RabbitMQConfig.java
+│   └── JobConfig.java
+├── domain
+│   └── CustomerOrder.java
+├── factory
+│   └── OrderFactory.java
+├── observer
+│   ├── OrderObserver.java
+│   ├── OrderSubject.java
+│   ├── OrderManager.java
+│   ├── NotificationService.java
+│   ├── BillingService.java
+│   └── ShippingService.java
+├── processor
+│   └── OrderItemProcessor.java
+├── singleton
+│   └── OrderStatistics.java
+├── strategy
+│   ├── OrderProcessingStrategy.java
+│   ├── StandardOrderProcessingStrategy.java
+│   ├── ExpressOrderProcessingStrategy.java
+│   └── OrderProcessor.java
+├── repository
+│   └── OrderRepository.java
+├── listener
+│   └── OrderEventListener.java
+└── EcommerceEventsApplication.java
+
+
+## Autor
+Igor Santos
+
+Desafio Técnico Java 2025
