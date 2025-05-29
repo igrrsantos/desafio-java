@@ -15,6 +15,10 @@ public class ExpressOrderProcessingStrategy implements OrderProcessingStrategy {
         this.orderRepository = orderRepository;
     }
 
+    /**
+     * Processa um pedido com lógica expressa.
+     * @param order O pedido a ser processado.
+     */
     @Override
     public void processOrder(CustomerOrder order) {
         if (order == null || order.getDescription() == null || order.getDescription().isEmpty()) {

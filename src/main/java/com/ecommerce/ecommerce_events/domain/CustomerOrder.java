@@ -1,5 +1,4 @@
 package com.ecommerce.ecommerce_events.domain;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -10,16 +9,11 @@ public class CustomerOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean priority;
-
-    public Boolean getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Boolean priority) {
-        this.priority = priority;
-    }
-
     private String description;
+
+    public boolean isPriority() {
+        return this.priority;
+    }
 
     public CustomerOrder() {}
 
@@ -28,6 +22,14 @@ public class CustomerOrder {
     }
 
     // Getters e Setters
+    public Boolean getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Boolean priority) {
+        this.priority = priority;
+    }
+
     public Long getId() {
         return id;
     }
