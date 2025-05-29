@@ -35,6 +35,11 @@ Este projeto é um desafio técnico em Java para processar eventos de pedidos (o
 ## Como Rodar
 
 1. Suba o RabbitMQ (pode usar `docker-compose` ou instalação local).
+Build + start com Docker:
+```bash
+docker compose build
+docker compose up
+```
 
 2. Rode a aplicação:
 ```bash
@@ -43,10 +48,32 @@ Este projeto é um desafio técnico em Java para processar eventos de pedidos (o
 ```
 
 3. Acesse:
+
+App → http://localhost:8080
+
 RabbitMQ Management → http://localhost:15672 (login: guest / guest)
+
 H2 Console → http://localhost:8080/h2-console (JDBC: jdbc:h2:mem:testdb, usuário: sa, senha: vazio)
 
+Postgres → localhost:5433
+
+## Endpoints disponíveis
+| Método | Rota        | Descrição                       |
+| ------ |-------------| ------------------------------- |
+| GET    | /api/orders | Lista todos os pedidos          |
+| POST   | /api/orders | Cria novo pedido e envia à fila |
+| GET    | /ping       | Health check (verificar app)    |
+
+
 ## Como Testar
+- Crie pedidos via:
+```
+curl -X POST http://localhost:8080/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{"description": "Pedido de teste"}'
+
+```
+
 - Publique uma mensagem simples no RabbitMQ, fila ecommerce.orders.
 
 - Veja nos logs:
@@ -56,6 +83,12 @@ H2 Console → http://localhost:8080/h2-console (JDBC: jdbc:h2:mem:testdb, usuá
 
 - Para testar DLQ:
   - Envie mensagem contendo FAIL → deve falhar e ir para a fila ecommerce.orders.dlq.
+
+## Testes
+Execute os testes unitários:
+```
+./mvnw test
+```
 
 ## Estrutura do Projeto
 ```
