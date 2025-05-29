@@ -5,7 +5,7 @@ Este projeto é um desafio técnico em Java para processar eventos de pedidos (o
 - Spring Batch  
 - Spring Data JPA  
 - RabbitMQ  
-- H2 Database  
+- PostgreSQL  
 - Strategy, Factory, Observer, Singleton
 
 ---
@@ -14,7 +14,7 @@ Este projeto é um desafio técnico em Java para processar eventos de pedidos (o
 
 - Consome mensagens da fila `ecommerce.orders` no RabbitMQ.
 - Processa pedidos com lógica diferenciada (padrão ou expresso).
-- Persiste os pedidos no banco H2.
+- Persiste os pedidos no banco PostgreSQL.
 - Aplica reprocessamento (retry) e envia mensagens falhadas para Dead Letter Queue (DLQ).
 - Conta globalmente os pedidos processados.
 - Segue arquitetura com múltiplos padrões de projeto.
@@ -52,8 +52,6 @@ docker compose up
 App → http://localhost:8080
 
 RabbitMQ Management → http://localhost:15672 (login: guest / guest)
-
-H2 Console → http://localhost:8080/h2-console (JDBC: jdbc:h2:mem:testdb, usuário: sa, senha: vazio)
 
 Postgres → localhost:5433
 

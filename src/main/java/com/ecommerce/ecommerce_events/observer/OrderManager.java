@@ -1,4 +1,5 @@
 package com.ecommerce.ecommerce_events.observer;
+
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import com.ecommerce.ecommerce_events.singleton.OrderStatistics;
 import org.slf4j.Logger;
@@ -28,10 +29,10 @@ public class OrderManager implements OrderSubject {
     }
 
     public void processOrder(CustomerOrder order) {
-        logger.info("Processando pedido no OrderManager: {}", order.getDescription());
+        logger.info("Processing order in OrderManager: {}", order.getDescription());
         OrderStatistics stats = OrderStatistics.getInstance();
         stats.incrementOrders();
-        logger.info("Total de pedidos processados até agora: {}", stats.getTotalOrdersProcessed());
+        logger.info("Total orders processed so far: {}", stats.getTotalOrdersProcessed());
         notifyObservers(order);
     }
 }

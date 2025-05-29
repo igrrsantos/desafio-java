@@ -1,4 +1,5 @@
 package com.ecommerce.ecommerce_events.domain;
+
 import jakarta.persistence.*;
 
 @Entity

@@ -1,4 +1,5 @@
 package com.ecommerce.ecommerce_events;
+
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import com.ecommerce.ecommerce_events.observer.*;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +22,7 @@ public class EcommerceEventsApplication {
 		orderManager.registerObserver(new ShippingService());
 
 		CustomerOrder order = new CustomerOrder();
-		order.setDescription("Pedido #1234");
+		order.setDescription("Order #1234");
 		orderManager.processOrder(order);
 	}
 }
