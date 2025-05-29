@@ -1,4 +1,5 @@
 package com.ecommerce.ecommerce_events.observer;
+
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
