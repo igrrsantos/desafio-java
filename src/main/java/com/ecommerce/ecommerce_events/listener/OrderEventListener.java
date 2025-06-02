@@ -2,6 +2,10 @@ package com.ecommerce.ecommerce_events.listener;
 
 import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import com.ecommerce.ecommerce_events.factory.OrderFactory;
+import com.ecommerce.ecommerce_events.observer.BillingService;
+import com.ecommerce.ecommerce_events.observer.NotificationService;
+import com.ecommerce.ecommerce_events.observer.OrderManager;
+import com.ecommerce.ecommerce_events.observer.ShippingService;
 import com.ecommerce.ecommerce_events.repository.OrderRepository;
 import com.ecommerce.ecommerce_events.strategy.ExpressOrderProcessingStrategy;
 import com.ecommerce.ecommerce_events.strategy.OrderProcessingStrategy;
@@ -17,12 +21,12 @@ import java.util.concurrent.ExecutorService;
 public class OrderEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderEventListener.class);
-    private final ExecutorService taskExecutor;
     private final OrderRepository orderRepository;
+    private final OrderManager orderManager;
 
-    public OrderEventListener(ExecutorService taskExecutor, OrderRepository orderRepository) {
-        this.taskExecutor = taskExecutor;
+    public OrderEventListener(OrderRepository orderRepository, OrderManager orderManager) {
         this.orderRepository = orderRepository;
+        this.orderManager = orderManager;
     }
 
     @RabbitListener(queues = "ecommerce.orders")
@@ -39,12 +43,14 @@ public class OrderEventListener {
 
         OrderProcessor processor = new OrderProcessor(strategy);
         processor.process(order);
+
+        orderManager.processOrder(order);
     }
 
     private void processOrder(String message) {
         logger.info("Processing order in thread {}: {}", Thread.currentThread().getName(), message);
         try {
-            Thread.sleep(2000);  // Simula trabalho pesado
+            Thread.sleep(2000);
             CustomerOrder order = new CustomerOrder(message.toUpperCase());
             orderRepository.save(order);
             logger.info("Saved order: {}", order.getDescription());

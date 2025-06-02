@@ -19,7 +19,7 @@ public class OrderController {
     @Value("${app.rabbitmq.queue}")
     private String queueName;
 
-    private final ObjectMapper objectMapper = new ObjectMapper(); // ← crie a instância aqui
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public OrderController(OrderRepository orderRepository, RabbitTemplate rabbitTemplate) {
         this.orderRepository = orderRepository;

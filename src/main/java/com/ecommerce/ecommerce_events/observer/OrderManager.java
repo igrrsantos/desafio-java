@@ -4,12 +4,15 @@ import com.ecommerce.ecommerce_events.domain.CustomerOrder;
 import com.ecommerce.ecommerce_events.singleton.OrderStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderManager implements OrderSubject {
     private static final Logger logger = LoggerFactory.getLogger(OrderManager.class);
-    private List<OrderObserver> observers = new ArrayList<>();
+    private final List<OrderObserver> observers = new ArrayList<>();
 
     @Override
     public void registerObserver(OrderObserver observer) {
@@ -28,6 +31,7 @@ public class OrderManager implements OrderSubject {
         }
     }
 
+    @Override
     public void processOrder(CustomerOrder order) {
         logger.info("Processing order in OrderManager: {}", order.getDescription());
         OrderStatistics stats = OrderStatistics.getInstance();

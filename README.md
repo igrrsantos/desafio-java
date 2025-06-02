@@ -89,6 +89,9 @@ Execute os testes unitários:
 ```
 
 ## Estrutura do Projeto
+
+![Arquitetura](ecommerce.png)
+
 ```
 src/main/java/com/ecommerce/ecommerce_events
 ├── config
